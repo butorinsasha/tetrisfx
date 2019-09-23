@@ -2,12 +2,14 @@ package tetrisfx;
 
 import javafx.application.Platform;
 import javafx.event.EventHandler;
-import javafx.scene.canvas.*;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+
+import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -127,9 +129,9 @@ public class Game extends TimerTask {
         return isPause;
     }
 
-    public void handleKeyEvents(KeyEvent e) throws CloneNotSupportedException{
+    public void handleKeyEvents(KeyEvent e) throws CloneNotSupportedException {
         if (currentShape == null) return;
-        switch (e.getCode()){
+        switch (e.getCode()) {
             case UP:
                 if (canRotate()) currentShape.rotateClockwise();
                 break;
@@ -221,7 +223,7 @@ public class Game extends TimerTask {
             currentShape.draw(boardCanvas);
         }
 
-        if(isGameOver) {
+        if (isGameOver) {
             drawGameOverMessage();
         }
     }
@@ -259,21 +261,21 @@ public class Game extends TimerTask {
 
     private boolean canShapePlaced(Shape shape, int dx, int dy) {
         int[][] shapeArray = shape.getArray();
-        for(int y=0; y<shape.getHeight(); y++) {
-            for(int x=0; x<shape.getWidth(); x++) {
+        for (int y = 0; y < shape.getHeight(); y++) {
+            for (int x = 0; x < shape.getWidth(); x++) {
                 if (shapeArray[y][x] == 0) continue;
                 if (currentShape.getY() + y < 0) continue;
                 if (currentShape.getY() + y + dy >= BOARD_ROWS) return false;
-                if (boardArray[currentShape.getY()+y][currentShape.getX()+x] != 0) return false;
-                if (dx != 0 && boardArray[currentShape.getY()+y][currentShape.getX()+x+dx] != 0) return false;
-                if (dy != 0 && boardArray[currentShape.getY()+y+dy][currentShape.getX()+x] != 0) return false;
+                if (boardArray[currentShape.getY() + y][currentShape.getX() + x] != 0) return false;
+                if (dx != 0 && boardArray[currentShape.getY() + y][currentShape.getX() + x + dx] != 0) return false;
+                if (dy != 0 && boardArray[currentShape.getY() + y + dy][currentShape.getX() + x] != 0) return false;
             }
         }
         return true;
     }
 
     private boolean isGameOver() {
-        for (int i=0; i<BOARD_COLS; i++) {
+        for (int i = 0; i < BOARD_COLS; i++) {
             if (boardArray[0][i] != 0) return true;
         }
         return false;
@@ -307,7 +309,7 @@ public class Game extends TimerTask {
         int[][] shapeArray = currentShape.getArray();
         for (int y = 0; y < 4; y++) {
             for (int x = 0; x < 4; x++) {
-                if (shapeArray[y][x] != 0 && currentShape.getY() + y >= 0 ) {
+                if (shapeArray[y][x] != 0 && currentShape.getY() + y >= 0) {
                     //boardArray[currentShape.getY() + y][currentShape.getX() + x] = shapeArray[y][x];
                     boardArrayCopy[currentShape.getY() + y][currentShape.getX() + x] = shapeArray[y][x];
                 }
@@ -319,8 +321,8 @@ public class Game extends TimerTask {
 
     private int[][] copyBoardArray() {
         int[][] newBoardArray = new int[BOARD_ROWS][BOARD_COLS];
-        for(int row=0; row<BOARD_ROWS; row++) {
-            for(int col=0; col<BOARD_COLS; col++) {
+        for (int row = 0; row < BOARD_ROWS; row++) {
+            for (int col = 0; col < BOARD_COLS; col++) {
                 newBoardArray[row][col] = boardArray[row][col];
             }
         }
@@ -342,7 +344,7 @@ public class Game extends TimerTask {
             if (isRowFull) {
                 isAnyLinesCleared = true;
                 for (int i = row; i >= 1; i--) {
-                    boardArray[i] = boardArray[i-1];
+                    boardArray[i] = boardArray[i - 1];
                 }
                 if (row > 0) {
                     for (int i = 0; i < BOARD_COLS; i++) {
@@ -365,36 +367,37 @@ public class Game extends TimerTask {
     }
 
     private void clearBoardArray() {
-        for(int y=0; y<BOARD_ROWS; y++) {
-            for(int x=0; x<BOARD_COLS; x++) {
-                boardArray[y][x] = 0;
-            }
-        }
+//        for(int y=0; y<BOARD_ROWS; y++) {
+//            for(int x=0; x<BOARD_COLS; x++) {
+//                boardArray[y][x] = 0;
+//            }
+//        }
+        Arrays.fill(boardArray, 0);
     }
 
     private void drawBoardBackground() {
         boardCanvas.setFill(Color.web("#272727"));
         boardCanvas.fillRect(
-            0,
-            0,
-            BOARD_COLS * (BLOCK_WIDTH + BLOCK_MARGIN) + BLOCK_MARGIN,
-            BOARD_ROWS * (BLOCK_WIDTH + BLOCK_MARGIN) + BLOCK_MARGIN);
+                0,
+                0,
+                BOARD_COLS * (BLOCK_WIDTH + BLOCK_MARGIN) + BLOCK_MARGIN,
+                BOARD_ROWS * (BLOCK_WIDTH + BLOCK_MARGIN) + BLOCK_MARGIN);
 
         boardCanvas.setFill(Color.web("#393939"));
-        for(int i=0; i<BOARD_COLS; i++) {
-            for(int j=0; j<BOARD_ROWS; j++) {
+        for (int i = 0; i < BOARD_COLS; i++) {
+            for (int j = 0; j < BOARD_ROWS; j++) {
                 boardCanvas.fillRect(
-                    i*(BLOCK_WIDTH + BLOCK_MARGIN) + BLOCK_MARGIN,
-                    j*(BLOCK_WIDTH + BLOCK_MARGIN) + BLOCK_MARGIN,
-                    BLOCK_WIDTH,
-                    BLOCK_WIDTH);
+                        i * (BLOCK_WIDTH + BLOCK_MARGIN) + BLOCK_MARGIN,
+                        j * (BLOCK_WIDTH + BLOCK_MARGIN) + BLOCK_MARGIN,
+                        BLOCK_WIDTH,
+                        BLOCK_WIDTH);
             }
         }
     }
 
     private void drawBoardBlocks() {
-        for(int y=0; y<BOARD_ROWS; y++){
-            for(int x=0; x<BOARD_COLS; x++){
+        for (int y = 0; y < BOARD_ROWS; y++) {
+            for (int x = 0; x < BOARD_COLS; x++) {
                 if (boardArray[y][x] != 0) {
                     Shape.drawBlock(boardCanvas, boardArray[y][x], x, y);
                 }
