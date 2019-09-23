@@ -93,7 +93,7 @@ public class Shape implements Cloneable {
 
         int rotateCount = new Random().nextInt(4);
         for (int i = 0; i <= rotateCount; i++) {
-            rotate();
+            rotateClockwise();
         }
 
         x = (Game.BOARD_COLS - getWidth())/2;
@@ -183,7 +183,7 @@ public class Shape implements Cloneable {
         x++;
     }
 
-    public void rotate() {
+    public void rotateClockwise() {
         // check square
         if (shapeType == 5) return;
 
@@ -194,9 +194,29 @@ public class Shape implements Cloneable {
             {0, 0, 0, 0}
         };
 
-        for(int y=0; y<getHeight(); y++){
-            for(int x=0; x<getWidth(); x++){
-                newShapeArray[x][getHeight()-y-1] = shapeArray[y][x];
+        for(int x=0; x<getHeight(); x++){
+            for(int y=0; y<getWidth(); y++){
+                newShapeArray[y][getHeight()-x-1] = shapeArray[x][y];
+            }
+        }
+
+        shapeArray = newShapeArray;
+    }
+
+    public void rotateCounterClockwise() {
+        // check square
+        if (shapeType == 5) return;
+
+        int[][] newShapeArray = new int[][]{
+                {0, 0, 0, 0},
+                {0, 0, 0, 0},
+                {0, 0, 0, 0},
+                {0, 0, 0, 0}
+        };
+
+        for(int x=0; x<getHeight(); x++){
+            for(int y=0; y<getWidth(); y++){
+                newShapeArray[getWidth()-y-1][x] = shapeArray[x][y];
             }
         }
 

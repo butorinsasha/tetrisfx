@@ -11,13 +11,14 @@ import javafx.scene.text.Font;
 import java.util.Timer;
 import java.util.TimerTask;
 
+// (?) What this timer is for?
 public class Game extends TimerTask {
 
-    public static final int BLOCK_WIDTH = 20;
-    public static final int BLOCK_MARGIN = 2;
-    public static final int BOARD_ROWS = 20;
-    public static final int BOARD_COLS = 10;
-    public static final int REPAINT_DELAY_MS = 300;
+    public static final int BLOCK_WIDTH = 10;
+    public static final int BLOCK_MARGIN = 1;
+    public static final int BOARD_ROWS = 40;
+    public static final int BOARD_COLS = 20;
+    public static final int REPAINT_DELAY_MS = 1000;
 
     private GraphicsContext boardCanvas = null;
     private GraphicsContext nextShapeCanvas = null;
@@ -34,6 +35,7 @@ public class Game extends TimerTask {
     private Shape currentShape = null;
     private Shape nextShape = null;
 
+    // (?) What this timer is for?
     private Timer gameTimer = new Timer();
     private int repaintDelayCounter = 0;
 
@@ -105,10 +107,14 @@ public class Game extends TimerTask {
         drawBoardBackground();
 
         repaintDelayCounter = 0;
+
+        // (?) What this timesr is for?
         gameTimer.schedule(this, 0, 1);
     }
 
     public void destroy() {
+
+        // (?) What this timesr is for
         gameTimer.cancel();
     }
 
@@ -125,7 +131,7 @@ public class Game extends TimerTask {
         if (currentShape == null) return;
         switch (e.getCode()){
             case UP:
-                if (canRotate()) currentShape.rotate();
+                if (canRotate()) currentShape.rotateClockwise();
                 break;
 
             case DOWN:
@@ -245,7 +251,7 @@ public class Game extends TimerTask {
     private boolean canRotate() throws CloneNotSupportedException {
         Shape rotatedShape;
         rotatedShape = currentShape.clone();
-        rotatedShape.rotate();
+        rotatedShape.rotateClockwise();
         if (currentShape.getY() + rotatedShape.getHeight() >= BOARD_ROWS) return false;
         if (currentShape.getX() + rotatedShape.getWidth() > BOARD_COLS) return false;
         return canShapePlaced(rotatedShape, 0, 0);
