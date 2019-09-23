@@ -14,11 +14,11 @@ import java.util.TimerTask;
 // (?) What this timer is for?
 public class Game extends TimerTask {
 
-    public static final int BLOCK_WIDTH = 10;
-    public static final int BLOCK_MARGIN = 1;
-    public static final int BOARD_ROWS = 40;
-    public static final int BOARD_COLS = 20;
-    public static final int REPAINT_DELAY_MS = 1000;
+    public static final int BLOCK_WIDTH = 20;
+    public static final int BLOCK_MARGIN = 2;
+    public static final int BOARD_ROWS = 20;
+    public static final int BOARD_COLS = 10;
+    public static final int REPAINT_DELAY_MS = 500;
 
     private GraphicsContext boardCanvas = null;
     private GraphicsContext nextShapeCanvas = null;
