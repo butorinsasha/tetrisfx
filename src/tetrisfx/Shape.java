@@ -162,6 +162,7 @@ public class Shape implements Cloneable {
         }
     }
 
+    // Draw a single block
     public static void drawBlock(GraphicsContext gc, int shapeType, int x, int y) {
         gc.setFill(Shape.getColor(shapeType));
         gc.fillRect(

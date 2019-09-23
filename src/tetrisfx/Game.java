@@ -367,12 +367,11 @@ public class Game extends TimerTask {
     }
 
     private void clearBoardArray() {
-//        for(int y=0; y<BOARD_ROWS; y++) {
-//            for(int x=0; x<BOARD_COLS; x++) {
-//                boardArray[y][x] = 0;
-//            }
-//        }
-        Arrays.fill(boardArray, 0);
+        for(int y=0; y<BOARD_ROWS; y++) {
+            for(int x=0; x<BOARD_COLS; x++) {
+                boardArray[y][x] = 0;
+            }
+        }
     }
 
     private void drawBoardBackground() {
