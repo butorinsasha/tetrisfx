@@ -25,6 +25,7 @@ public class Game extends TimerTask {
     private GraphicsContext boardCanvas = null;
     private GraphicsContext nextShapeCanvas = null;
     private Label scoreLabel = null;
+    private Label hiScoreLabel = null;
     private Label btnNewGame = null;
     private Label btnStopGame = null;
     private Label btnPauseGame = null;
@@ -51,6 +52,10 @@ public class Game extends TimerTask {
 
     public void setScoreLabel(Label control) {
         scoreLabel = control;
+    }
+
+    public void setHiScoreLabel(Label control) {
+        hiScoreLabel = control;
     }
 
     public void setNewGameButton(Label control) {
@@ -166,6 +171,7 @@ public class Game extends TimerTask {
         btnPauseGame.setStyle("visibility: visible;");
         btnPauseGame.setText("PAUSE");
         scoreLabel.setText("0");
+        hiScoreLabel.setText("999999");
 
         clearBoardArray();
         putNextShapeOnBoard();

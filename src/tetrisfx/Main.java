@@ -30,6 +30,7 @@ public class Main extends Application {
         game.setBoardGraphicsContext(((Canvas)scene.lookup("#gameCanvas")).getGraphicsContext2D());
         game.setNextShapeCanvasGraphicsContext(((Canvas)scene.lookup("#nextShapeCanvas")).getGraphicsContext2D());
         game.setScoreLabel((Label)scene.lookup("#lblScore"));
+        game.setHiScoreLabel((Label)scene.lookup("#lblHiScore"));
         game.setNewGameButton((Label)scene.lookup("#btnNewGame"));
         game.setStopGameButton((Label)scene.lookup("#btnStopGame"));
         game.setPauseGameButton((Label)scene.lookup("#btnPauseGame"));
