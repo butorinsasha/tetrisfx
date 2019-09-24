@@ -5,6 +5,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -19,12 +20,23 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("window.fxml"));
+        Node scoresNode = FXMLLoader.load(getClass().getResource("scores.fxml"));
+
+        Scores scoresStage = new Scores();
+
+        scoresStage.setTitle("Hi-Scores");
         stage.setTitle("Tetris");
+
         Scene scene = new Scene(root, 360, 444);
+        Scene scoreScene = FXMLLoader.load(getClass().getResource("scores.fxml"));
+
         scene.getStylesheets().add(getClass().getResource("resources/stylesheet.css").toExternalForm());
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
+
+        scoresStage.setScene(scoreScene);
+        stage.setResizable(false);
 
         game = new Game();
         game.setBoardGraphicsContext(((Canvas)scene.lookup("#gameCanvas")).getGraphicsContext2D());
