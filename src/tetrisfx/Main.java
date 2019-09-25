@@ -24,11 +24,11 @@ public class Main extends Application {
 
         Scores scoresStage = new Scores();
 
+        stage.setTitle("Tetris"); 
         scoresStage.setTitle("Hi-Scores");
-        stage.setTitle("Tetris");
 
         Scene scene = new Scene(root, 360, 444);
-        Scene scoreScene = FXMLLoader.load(getClass().getResource("scores.fxml"));
+        Scene scoreScene = new Scene(scoresScene, 300, 400);
 
         scene.getStylesheets().add(getClass().getResource("resources/stylesheet.css").toExternalForm());
         stage.setScene(scene);
