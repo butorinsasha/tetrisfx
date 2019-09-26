@@ -9,7 +9,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
-import java.util.Arrays;
+import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -22,15 +22,17 @@ public class Game extends TimerTask {
     public static final int BOARD_COLS = 10;
     public static final int REPAINT_DELAY_MS = 500;
 
-    private GraphicsContext boardCanvas = null;
-    private GraphicsContext nextShapeCanvas = null;
-    private Label scoreLabel = null;
-    private Label hiScoreLabel = null;
-    private Label btnNewGame = null;
-    private Label btnStopGame = null;
-    private Label btnPauseGame = null;
+    private GraphicsContext boardCanvas;
+    private GraphicsContext nextShapeCanvas;
+    private Label scoreLabel;
+    private Label hiScoreLabel;
+    private Label btnNewGame;
+    private Label btnStopGame;
+    private Label btnPauseGame;
+    private Label btnSaveScore;
 
     private int score = 0;
+
     private boolean isPause = false;
     private boolean isGameRun = false;
     private boolean isGameOver = false;
@@ -70,6 +72,10 @@ public class Game extends TimerTask {
         btnPauseGame = control;
     }
 
+    public void setBtnSaveScoreButton(Label btnSaveScore) {
+        this.btnSaveScore = btnSaveScore;
+    }
+
     /**
      * Init game.
      *
@@ -89,25 +95,39 @@ public class Game extends TimerTask {
             throw new Exception("btnStopGame is null");
         if (btnPauseGame == null)
             throw new Exception("btnPauseGame is null");
+        if (btnSaveScore == null)
+            throw new Exception("btnSaveScore is null");
 
         // assign events listeners to buttons
+
         btnNewGame.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 startNewGame();
             }
         });
+
         btnNewGame.setStyle("visibility: visible;");
+
         btnStopGame.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 stopGame();
             }
         });
+
         btnPauseGame.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 pause();
+            }
+        });
+
+        btnSaveScore.setOnMouseClicked(event -> {
+            try {
+                new Scores();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         });
 
@@ -169,6 +189,7 @@ public class Game extends TimerTask {
         btnNewGame.setStyle("visibility: hidden;");
         btnStopGame.setStyle("visibility: visible;");
         btnPauseGame.setStyle("visibility: visible;");
+        btnSaveScore.setStyle("visibility: hidden");
         btnPauseGame.setText("PAUSE");
         scoreLabel.setText("0");
         hiScoreLabel.setText("999999");
@@ -231,6 +252,7 @@ public class Game extends TimerTask {
 
         if (isGameOver) {
             drawGameOverMessage();
+            btnSaveScore.setStyle("visibility: visible");
         }
     }
 
