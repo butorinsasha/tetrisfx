@@ -218,7 +218,7 @@
       <exclude name="TetrisFX.jar"/>
     </fx:fileset>
     <fx:fileset id="all_TetrisFX" dir="${artifact.temp.output.TetrisFX}" includes="**/*.jar"/>
-    <fx:application id="TetrisFX_id" name="TetrisFX" mainClass="tetrisfx.Main"/>
+    <fx:application id="TetrisFX_id" name="TetrisFX" mainClass="tetrisfx.GameController"/>
     <fx:jar destfile="${artifact.temp.output.TetrisFX}/TetrisFX.jar">
       <fx:application refid="TetrisFX_id"/>
       <fileset dir="${artifact.temp.output.TetrisFX}" excludes="**/*.jar"/>

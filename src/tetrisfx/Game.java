@@ -82,23 +82,8 @@ public class Game extends TimerTask {
      * @throws Exception
      */
     public void init() throws Exception {
-        // check UI
-        if (boardCanvas == null)
-            throw new Exception("boardCanvas is null");
-        if (nextShapeCanvas == null)
-            throw new Exception("nextShapeCanvas is null");
-        if (scoreLabel == null)
-            throw new Exception("scoreLabel is null");
-        if (btnNewGame == null)
-            throw new Exception("btnNewGame is null");
-        if (btnStopGame == null)
-            throw new Exception("btnStopGame is null");
-        if (btnPauseGame == null)
-            throw new Exception("btnPauseGame is null");
-        if (btnSaveScore == null)
-            throw new Exception("btnSaveScore is null");
 
-        // assign events listeners to buttons
+        // Assign events listeners to buttons
 
         btnNewGame.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -125,7 +110,7 @@ public class Game extends TimerTask {
 
         btnSaveScore.setOnMouseClicked(event -> {
             try {
-                new Scores();
+                new ScoresController();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -192,7 +177,7 @@ public class Game extends TimerTask {
         btnSaveScore.setStyle("visibility: hidden");
         btnPauseGame.setText("PAUSE");
         scoreLabel.setText("0");
-        hiScoreLabel.setText("999999");
+        hiScoreLabel.setText(String.valueOf(Integer.MAX_VALUE));
 
         clearBoardArray();
         putNextShapeOnBoard();

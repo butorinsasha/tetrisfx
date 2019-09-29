@@ -1,50 +1,102 @@
 package tetrisfx;
 
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.stage.Stage;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Collections;
 
-import javax.swing.text.TableView;
-import java.io.IOException;
+public class Scores {
 
-public class Scores extends Stage {
+    // An arraylist of the type "score" we will use to work with the scores inside the class
+    private ArrayList<Score> scoresList;
 
-    private TableView tableView;
-    private TextField enterNameTextField;
-    private Label scoreLabel;
-    private Button saveButton;
-    private Button cancelButton;
+    // The name of the file where the highscores will be saved
+    // Using a binary file to keep the high-scores in, this will avoid cheating.
+    private static final String SCORES_FILE = "src/tetrisfx/resources/scores.dat";
 
-    public Scores() throws IOException {
-        Parent scoresRoot = FXMLLoader.load(getClass().getResource("scores.fxml"));
-        this.setTitle("Hi-Scores");
-        Scene scoreScene = new Scene(scoresRoot, 300, 400);
-        this.setScene(scoreScene);
-        this.setResizable(false);
-        this.show();
+    //Initialising an in and outputStream for working with the file
+    ObjectOutputStream outputStream;
+    ObjectInputStream inputStream;
+
+    public Scores() {
+        //initialising the scores-arraylist
+        scoresList = new ArrayList<Score>();
     }
 
-    public void setTableView(TableView tableView) {
-        this.tableView = tableView;
+    public ArrayList<Score> getScoresList() {
+        loadScoresFile(SCORES_FILE);
+        sort();
+        return scoresList;
     }
 
-    public void setScoreLabel(Label scoreLabel) {
-        this.scoreLabel = scoreLabel;
+    private void sort() {
+        ScoresComparator comparator = new ScoresComparator();
+        Collections.sort(scoresList, comparator);
     }
 
-    public void setEnterNameTextField(TextField enterNameTextField) {
-        this.enterNameTextField = enterNameTextField;
+    public void addScore(String name, int score) {
+        loadScoresFile(SCORES_FILE);
+        scoresList.add(new Score(name, score));
+        updateScoresFile(SCORES_FILE);
     }
 
-    public void setSaveButton(Button saveButton) {
-        this.saveButton = saveButton;
+    public void loadScoresFile(String filename) {
+        try {
+            inputStream = new ObjectInputStream(new FileInputStream(filename));
+            scoresList = (ArrayList<Score>) inputStream.readObject();
+        } catch (FileNotFoundException e) {
+            System.out.println("[Load] FNF Error: " + e.getMessage());
+        } catch (IOException e) {
+            System.out.println("[Load] IO Error: " + e.getMessage());
+        } catch (ClassNotFoundException e) {
+            System.out.println("[Load] CNF Error: " + e.getMessage());
+        } finally {
+            try {
+                if (outputStream != null) {
+                    outputStream.flush();
+                    outputStream.close();
+                }
+            } catch (IOException e) {
+                System.out.println("[Load] IO Error: " + e.getMessage());
+            }
+        }
     }
 
-    public void setCancelButton(Button cancelButton) {
-        this.cancelButton = cancelButton;
+    public void updateScoresFile(String filename) {
+        try {
+            outputStream = new ObjectOutputStream(new FileOutputStream(filename));
+            outputStream.writeObject(scoresList);
+        } catch (FileNotFoundException e) {
+            System.out.println("[Update] FNF Error: " + e.getMessage() + ",the program will try and make a new file");
+        } catch (IOException e) {
+            System.out.println("[Update] IO Error: " + e.getMessage());
+        } finally {
+            try {
+                if (outputStream != null) {
+                    outputStream.flush();
+                    outputStream.close();
+                }
+            } catch (IOException e) {
+                System.out.println("[Update] Error: " + e.getMessage());
+            }
+        }
+    }
+
+    public String getHighscoreString() {
+        String highscoreString = "";
+        int max = 10;
+
+        ArrayList<Score> scores;
+        scores = getScoresList();
+
+        int i = 0;
+        int x = scores.size();
+        if (x > max) {
+            x = max;
+        }
+        while (i < x) {
+            highscoreString += (i + 1) + ".\t" + scores.get(i).getName() + "\t\t" + scores.get(i).getScore() + "\n";
+            i++;
+        }
+        return highscoreString;
     }
 }

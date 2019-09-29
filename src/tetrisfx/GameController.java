@@ -13,12 +13,12 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-public class Main extends Application {
+public class GameController extends Application {
     Game game = null;
 
     @Override
     public void start(Stage mainStage) throws Exception{
-        Parent mainRoot = FXMLLoader.load(getClass().getResource("window.fxml"));
+        Parent mainRoot = FXMLLoader.load(getClass().getResource("game.fxml"));
         mainStage.setTitle("Tetris");
         Scene mainScene = new Scene(mainRoot, 360, 444);
         mainScene.getStylesheets().add(getClass().getResource("resources/stylesheet.css").toExternalForm());
