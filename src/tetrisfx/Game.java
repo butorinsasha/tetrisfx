@@ -31,7 +31,9 @@ public class Game extends TimerTask {
     private Label btnPauseGame;
     private Label btnSaveScore;
 
-    private int score = 0;
+    private int currentScore = 0;
+    private Scores scores = new Scores(currentScore);
+    private int hiScore = 0;
 
     private boolean isPause = false;
     private boolean isGameRun = false;
@@ -110,7 +112,8 @@ public class Game extends TimerTask {
 
         btnSaveScore.setOnMouseClicked(event -> {
             try {
-                new ScoresController();
+                new ScoresController(currentScore);
+                btnSaveScore.setStyle("visibility: hidden");
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -120,13 +123,13 @@ public class Game extends TimerTask {
 
         repaintDelayCounter = 0;
 
-        // (?) What this timesr is for?
+        // (?) What this timer is for?
         gameTimer.schedule(this, 0, 1);
     }
 
     public void destroy() {
 
-        // (?) What this timesr is for
+        // (?) What this timer is for
         gameTimer.cancel();
     }
 
@@ -165,19 +168,21 @@ public class Game extends TimerTask {
     private void startNewGame() {
         currentShape = null;
         nextShape = null;
-        score = 0;
+        currentScore = 0;
         isPause = false;
         isGameRun = true;
         isGameOver = false;
+        hiScore = new Scores(currentScore).getHiScore();
+        btnSaveScore.setStyle("vivibility: visible;");
 
         // show/hide buttons & UI
         btnNewGame.setStyle("visibility: hidden;");
         btnStopGame.setStyle("visibility: visible;");
         btnPauseGame.setStyle("visibility: visible;");
-        btnSaveScore.setStyle("visibility: hidden");
+        btnSaveScore.setStyle("visibility: hidden;");
         btnPauseGame.setText("PAUSE");
         scoreLabel.setText("0");
-        hiScoreLabel.setText(String.valueOf(Integer.MAX_VALUE));
+        hiScoreLabel.setText(String.valueOf(hiScore));
 
         clearBoardArray();
         putNextShapeOnBoard();
@@ -375,8 +380,8 @@ public class Game extends TimerTask {
     }
 
     private void updateScore(int score) {
-        this.score += score;
-        scoreLabel.setText(String.valueOf(this.score));
+        this.currentScore += score;
+        scoreLabel.setText(String.valueOf(this.currentScore));
     }
 
     private void clearBoardArray() {

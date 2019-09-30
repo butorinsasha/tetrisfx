@@ -3,8 +3,11 @@ package tetrisfx;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class Scores {
+
+    int currentScore;
 
     // An arraylist of the type "score" we will use to work with the scores inside the class
     private ArrayList<Score> scoresList;
@@ -17,14 +20,13 @@ public class Scores {
     ObjectOutputStream outputStream;
     ObjectInputStream inputStream;
 
-    public Scores() {
-        //initialising the scores-arraylist
-        scoresList = new ArrayList<Score>();
+    public Scores(int currentScore) {
+        this.currentScore = currentScore;
+        scoresList = getScoresList();
     }
 
     public ArrayList<Score> getScoresList() {
         loadScoresFile(SCORES_FILE);
-        sort();
         return scoresList;
     }
 
@@ -36,6 +38,7 @@ public class Scores {
     public void addScore(String name, int score) {
         loadScoresFile(SCORES_FILE);
         scoresList.add(new Score(name, score));
+        sort();
         updateScoresFile(SCORES_FILE);
     }
 
@@ -44,11 +47,14 @@ public class Scores {
             inputStream = new ObjectInputStream(new FileInputStream(filename));
             scoresList = (ArrayList<Score>) inputStream.readObject();
         } catch (FileNotFoundException e) {
-            System.out.println("[Load] FNF Error: " + e.getMessage());
+            System.out.println("[Load] FileNotFoundException: " + e.getMessage());
+            System.out.println("[Load] Zero-score will be set as hi-score");
+            currentScore = 0;
+            scoresList = new ArrayList<>();
         } catch (IOException e) {
-            System.out.println("[Load] IO Error: " + e.getMessage());
+            System.out.println("[Load] IOException: " + e.getMessage());
         } catch (ClassNotFoundException e) {
-            System.out.println("[Load] CNF Error: " + e.getMessage());
+            System.out.println("[Load] ClassNotFoundException: " + e.getMessage());
         } finally {
             try {
                 if (outputStream != null) {
@@ -66,7 +72,7 @@ public class Scores {
             outputStream = new ObjectOutputStream(new FileOutputStream(filename));
             outputStream.writeObject(scoresList);
         } catch (FileNotFoundException e) {
-            System.out.println("[Update] FNF Error: " + e.getMessage() + ",the program will try and make a new file");
+            System.out.println("[Update] FNF Error: " + e.getMessage() + ", the program will make a new file");
         } catch (IOException e) {
             System.out.println("[Update] IO Error: " + e.getMessage());
         } finally {
@@ -81,22 +87,10 @@ public class Scores {
         }
     }
 
-    public String getHighscoreString() {
-        String highscoreString = "";
-        int max = 10;
-
-        ArrayList<Score> scores;
-        scores = getScoresList();
-
-        int i = 0;
-        int x = scores.size();
-        if (x > max) {
-            x = max;
-        }
-        while (i < x) {
-            highscoreString += (i + 1) + ".\t" + scores.get(i).getName() + "\t\t" + scores.get(i).getScore() + "\n";
-            i++;
-        }
-        return highscoreString;
+    public int getHiScore() {
+        if (scoresList.size() != 0)
+            return scoresList.get(0).getScore();
+        else
+            return 0;
     }
 }

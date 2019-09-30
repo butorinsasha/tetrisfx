@@ -11,15 +11,14 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class ScoresController extends Stage {
+class ScoresController extends Stage {
 
-    Scores scores;
+    private Scores scores;
 
     private TableView scoresTableView;
     private TextField nameTextField;
     private Label scoreLabel;
     private Button saveButton;
-    private Button cancelButton;
 
     public void setScoresTableView(TableView scoresTableView) {
         this.scoresTableView = scoresTableView;
@@ -37,22 +36,28 @@ public class ScoresController extends Stage {
         this.saveButton = saveButton;
     }
 
-    public void setCancelButton(Button cancelButton) {
-        this.cancelButton = cancelButton;
-    }
-
-    public void init() {
+    public void init(int currentScore) {
 
         // Assign event listeners to buttons
 
-        saveButton.setOnMouseClicked((me) -> scores.addScore(
+        saveButton.setOnMouseClicked((me) -> {
+            scores.addScore(
                 nameTextField.getText(),
-                Integer.parseInt(scoreLabel.getText())));
+                scores.currentScore);
+            saveButton.setDisable(true);
+            fillScoreTableView();
+        });
 
-        cancelButton.setOnMouseClicked((me) -> this.hide());
+        scoreLabel.setText(String.valueOf(currentScore));
     }
 
-    public ScoresController() throws IOException {
+    // Stub for update score table
+    private void fillScoreTableView() {
+        return;
+    }
+
+    public ScoresController(int currentScore) throws IOException {
+
         Parent scoresRoot = FXMLLoader.load(getClass().getResource("scores.fxml"));
         this.setTitle("Hi-Scores");
         Scene scoresScene = new Scene(scoresRoot, 300, 400);
@@ -60,14 +65,13 @@ public class ScoresController extends Stage {
         this.setResizable(false);
         this.show();
 
-        scores = new Scores();
+        scores = new Scores(currentScore);
 
         setScoresTableView((TableView) scoresScene.lookup(("#tblScores")));
         setScoreLabel((Label) scoresScene.lookup("#lblScore"));
         setNameTextField((TextField) scoresScene.lookup("#txtfldName"));
         setSaveButton((Button) scoresScene.lookup("#btnSave"));
-        setCancelButton((Button) scoresScene.lookup("#btnCancel"));
-        init();
+        init(currentScore);
     }
 
 }

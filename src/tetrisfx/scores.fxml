@@ -45,8 +45,7 @@
                         <Font size="15.0" />
                     </font>
                 </Label>
-                <Button fx:id="btnSave" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="SAVE" GridPane.columnIndex="2" />
-                <Button fx:id="btnCancel" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="CANCEL" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                <Button fx:id="btnSave" mnemonicParsing="false" prefHeight="73.0" prefWidth="74.0" text="SAVE" GridPane.columnIndex="2" />
                 <TextField fx:id="txtfldName" text="Enter your name" GridPane.columnIndex="1" />
                 <Label alignment="CENTER" text="NAME:" textFill="WHITE">
                     <font>
