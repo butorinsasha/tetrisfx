@@ -3,10 +3,8 @@ package tetrisfx;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -24,6 +22,13 @@ class ScoresController extends Stage {
         this.scoresTableView = scoresTableView;
     }
 
+    public void addScoresTableColumn(String header, String property, int size) {
+        TableColumn<String, Score> col = new TableColumn<>(header);
+        col.setCellValueFactory(new PropertyValueFactory<>(property));
+        col.setPrefWidth(size);
+        scoresTableView.getColumns().add(col);
+    }
+
     public void setScoreLabel(Label scoreLabel) {
         this.scoreLabel = scoreLabel;
     }
@@ -38,22 +43,41 @@ class ScoresController extends Stage {
 
     public void init(int currentScore) {
 
+        // Init Scores table
         // Assign event listeners to buttons
+
+        initScoresTableView();
+        refreshScoresTableView();
+
+        scoreLabel.setText(String.valueOf(currentScore));
 
         saveButton.setOnMouseClicked((me) -> {
             scores.addScore(
-                nameTextField.getText(),
-                scores.currentScore);
+                    nameTextField.getText(),
+                    scores.currentScore
+            );
             saveButton.setDisable(true);
-            fillScoreTableView();
+            refreshScoresTableView();
         });
-
-        scoreLabel.setText(String.valueOf(currentScore));
     }
 
-    // Stub for update score table
-    private void fillScoreTableView() {
-        return;
+    private void initScoresTableView() {
+        addScoresTableColumn("Score", "score", 50);
+        addScoresTableColumn("Name", "name", 250);
+    }
+
+    private void clearScoresTableView() {
+        scoresTableView.getItems().clear();
+    }
+
+    private void fillScoresTableView() {
+        if (scores != null && scores.getScoresList() != null && scores.getScoresList().size() != 0)
+            scoresTableView.getItems().addAll(scores.getScoresList());
+    }
+
+    private void refreshScoresTableView() {
+        clearScoresTableView();
+        fillScoresTableView();
     }
 
     public ScoresController(int currentScore) throws IOException {
