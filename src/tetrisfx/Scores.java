@@ -13,7 +13,7 @@ public class Scores {
 
     // The name of the file where the highscores will be saved
     // Using a binary file to keep the high-scores in, this will avoid cheating.
-    private static final String SCORES_FILE = "src/tetrisfx/resources/scores.dat";
+    private static final String SCORES_FILE = "scores.dat";
 
     //Initialising an in and outputStream for working with the file
     ObjectOutputStream outputStream;
