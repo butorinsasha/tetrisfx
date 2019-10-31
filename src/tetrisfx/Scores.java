@@ -48,19 +48,16 @@ public class Scores {
         } catch (FileNotFoundException e) {
             System.out.println("[Load] FileNotFoundException: " + e.getMessage());
             System.out.println("[Load] Zero-score will be set as hi-score");
-//            currentScore = 0;
             System.out.println("[Load] Empty scoresList will be created");
             scoresList = new ArrayList<>();
         } catch (IOException e) {
             System.out.println("[Load] IOException: " + e.getMessage());
             System.out.println("[Load] Zero-score will be set as hi-score");
-//            currentScore = 0;
             System.out.println("[Load] Empty scoresList will be created");
             scoresList = new ArrayList<>();
         } catch (ClassNotFoundException e) {
             System.out.println("[Load] ClassNotFoundException: " + e.getMessage());
             System.out.println("[Load] Zero-score will be set as hi-score");
-//            currentScore = 0;
             System.out.println("[Load] Empty scoresList will be created");
             scoresList = new ArrayList<>();
         } finally {

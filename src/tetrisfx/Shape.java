@@ -224,11 +224,6 @@ public class Shape implements Cloneable {
         shapeArray = newShapeArray;
     }
 
-    /**
-     * Get shape width
-     *
-     * @return int
-     */
     public int getWidth() {
         int width = 0, tmpWidth = 0;
         for(int y=0; y<4; y++){
@@ -246,11 +241,6 @@ public class Shape implements Cloneable {
         return width + 1;
     }
 
-    /**
-     * Get shape height
-     *
-     * @return int
-     */
     public int getHeight() {
         int height = 0, tmpHeight = 0;
         for(int x=0; x<4; x++){

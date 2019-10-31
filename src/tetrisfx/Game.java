@@ -1,11 +1,9 @@
 package tetrisfx;
 
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
@@ -13,7 +11,6 @@ import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
-// (?) What this timer is for?
 public class Game extends TimerTask {
 
     public static final int BLOCK_WIDTH = 20;
@@ -42,7 +39,6 @@ public class Game extends TimerTask {
     private Shape currentShape = null;
     private Shape nextShape = null;
 
-    // (?) What this timer is for?
     private Timer gameTimer = new Timer();
     private int repaintDelayCounter = 0;
 
@@ -86,29 +82,13 @@ public class Game extends TimerTask {
     public void init() throws Exception {
 
         // Assign events listeners to buttons
-
-        btnNewGame.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                startNewGame();
-            }
-        });
+        btnNewGame.setOnMouseClicked(event -> startNewGame());
 
         btnNewGame.setStyle("visibility: visible;");
 
-        btnStopGame.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                stopGame();
-            }
-        });
+        btnStopGame.setOnMouseClicked(event -> stopGame());
 
-        btnPauseGame.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                pause();
-            }
-        });
+        btnPauseGame.setOnMouseClicked(event -> pause());
 
         btnSaveScore.setOnMouseClicked(event -> {
             try {
@@ -123,13 +103,11 @@ public class Game extends TimerTask {
 
         repaintDelayCounter = 0;
 
-        // (?) What this timer is for?
         gameTimer.schedule(this, 0, 1);
     }
 
     public void destroy() {
 
-        // (?) What this timer is for
         gameTimer.cancel();
     }
 
@@ -209,19 +187,15 @@ public class Game extends TimerTask {
         nextShapeCanvas.fillRect(0, 0, 200, 200);
     }
 
-    /**
-     * Game "main loop"
-     */
+    // Game "main loop"
     public void run() {
-        Platform.runLater(new Runnable() {
-            public void run() {
-                if (isPause || !isGameRun) return;
-                if (++repaintDelayCounter >= REPAINT_DELAY_MS) {
-                    repaintDelayCounter = 0;
-                    updateGame();
-                }
-                repaint();
+        Platform.runLater(() -> {
+            if (isPause || !isGameRun) return;
+            if (++repaintDelayCounter >= REPAINT_DELAY_MS) {
+                repaintDelayCounter = 0;
+                updateGame();
             }
+            repaint();
         });
     }
 
@@ -246,11 +220,7 @@ public class Game extends TimerTask {
         }
     }
 
-    /**
-     * Check if possible current shape move down
-     *
-     * @return boolean
-     */
+    // Check if possible current shape move down
     private boolean canMoveDown() {
         return canShapePlaced(currentShape, 0, 1);
     }
@@ -263,11 +233,7 @@ public class Game extends TimerTask {
         return (currentShape.getX() + currentShape.getWidth() < BOARD_COLS) && canShapePlaced(currentShape, 1, 0);
     }
 
-    /**
-     * Check if possible to rotate currentShape
-     *
-     * @return boolean
-     */
+    // Check if possible to rotate currentShape
     private boolean canRotate() throws CloneNotSupportedException {
         Shape rotatedShape;
         rotatedShape = currentShape.clone();
@@ -385,8 +351,8 @@ public class Game extends TimerTask {
     }
 
     private void clearBoardArray() {
-        for(int y=0; y<BOARD_ROWS; y++) {
-            for(int x=0; x<BOARD_COLS; x++) {
+        for (int y = 0; y < BOARD_ROWS; y++) {
+            for (int x = 0; x < BOARD_COLS; x++) {
                 boardArray[y][x] = 0;
             }
         }
